@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard - Heart Care+{% endblock %}
+{% block content %}
+<style>
+  .admin-hero {
+    background: linear-gradient(90deg, #fff5f5 60%, #c0392b10 100%);
+    border-radius: 1.5rem;
+    padding: 2.5rem 2rem 2rem 2rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 4px 24px rgba(192,57,43,0.07);
+  }
+  .metric-card {
+    border-radius: 1rem;
+    box-shadow: 0 2px 12px rgba(34,42,95,0.07);
+    border: none;
+    transition: transform 0.1s;
+  }
+  .metric-card:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 6px 24px rgba(192,57,43,0.13);
+  }
+  .metric-title {
+    color: #c0392b;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  .metric-img {
+    max-height: 160px;
+    object-fit: contain;
+    margin-bottom: 0.5rem;
+  }
+</style>
+<div class="container py-5">
+  <form method="get" class="mb-4 text-end">
+    <label class="fw-bold me-2" for="model_name">Model:</label>
+    <select name="model_name" id="model_name" class="form-select d-inline-block w-auto" onchange="this.form.submit()">
+      <option value="logistic" {% if model_name == 'logistic' %}selected{% endif %}>Logistic Regression</option>
+      <option value="random_forest" {% if model_name == 'random_forest' %}selected{% endif %}>Random Forest</option>
+      <option value="xgboost" {% if model_name == 'xgboost' %}selected{% endif %}>XGBoost</option>
+    </select>
+  </form>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Admin Dashboard</h2>
+    <a href="/admin/messages" class="btn btn-outline-danger">View Contact Messages</a>
+  </div>
+  <div class="admin-hero text-center mb-5">
+    <h1 class="fw-bold mb-2" style="color:#c0392b;">Admin Dashboard</h1>
+    <p class="lead text-muted mb-0">Monitor model performance and manage users with ease.</p>
+  </div>
+  <div class="row g-4 mb-4">
+    <div class="col-md-3">
+      <div class="card metric-card text-center">
+        <div class="card-body">
+          <div class="metric-title">Total Users</div>
+          <div class="display-5 fw-bold" style="color:#c0392b;">{{ user_count }}</div>
+          <div class="text-muted">Registered users</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card metric-card text-center">
+        <div class="card-body">
+          <div class="metric-title">Reports Generated</div>
+          <div class="display-5 fw-bold" style="color:#2980b9;">{{ report_count }}</div>
+          <div class="text-muted">Total predictions</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card metric-card text-center">
+        <div class="card-body">
+          <div class="metric-title">Model Accuracy</div>
+          <img src="/{{ performance['accuracy_image'] }}" alt="Accuracy" class="img-fluid metric-img">
+          <div class="text-muted">Accuracy: <span class="fw-bold">{{ (performance['accuracy'] * 100) | round(2) }}%</span></div>
+          <div class="small mt-2">Shows the percentage of correct predictions made by the model. Higher is better.</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card metric-card text-center">
+        <div class="card-body">
+          <div class="metric-title">Confusion Matrix</div>
+          <img src="/{{ performance['cm_image'] }}" alt="Confusion Matrix" class="img-fluid metric-img">
+          <div class="small mt-2">Visualizes true/false positives and negatives. Helps identify model strengths and weaknesses.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row g-4 mb-4">
+    <div class="col-md-6">
+      <div class="card metric-card text-center">
+        <div class="card-body">
+          <div class="metric-title">ROC Curve</div>
+          <img src="/{{ performance['roc_image'] }}" alt="ROC Curve" class="img-fluid metric-img">
+          <div class="small mt-2">Shows the trade-off between sensitivity and specificity. AUC closer to 1 means better performance.</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card metric-card text-center">
+        <div class="card-body">
+          <div class="metric-title">Loss Curve</div>
+          <img src="/{{ performance['loss_image'] }}" alt="Loss Curve" class="img-fluid metric-img">
+          <div class="small mt-2">Displays how the model's error decreased during training. A smooth downward curve is ideal.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-12 text-end">
+      <a href="/admin/users" class="btn btn-outline-danger">Manage Users</a>
+      <a href="/admin/logout" class="btn btn-outline-secondary ms-2">Logout</a>
+    </div>
+  </div>
+</div>
+{% endblock %} 

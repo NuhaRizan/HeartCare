@@ -1,0 +1,345 @@
+{% extends 'base.html' %}
+{% block title %}Predict Now - Heart Disease{% endblock %}
+{% block content %}
+<style>
+    .predict-bg {
+        min-height: 300px;
+        border-radius: 0 0 2rem 2rem;
+        margin-bottom: -120px;
+        position: relative;
+        z-index: 1;
+    }
+    .predict-card {
+        border-radius: 2rem;
+        box-shadow: 0 8px 32px rgba(34,42,95,0.08);
+        margin-top: -120px;
+        z-index: 2;
+        position: relative;
+    }
+    .predict-btn {
+        background: #e74c3c;
+        border: none;
+        border-radius: 1rem;
+        font-size: 1.25rem;
+        font-weight: bold;
+        padding: 0.75rem 0;
+        letter-spacing: 1px;
+    }
+    .predict-btn:hover {
+        background: #c0392b;
+    }
+    .form-control, .form-select {
+        border-radius: 1rem !important;
+        font-size: 1.1rem;
+        padding: 0.75rem 1rem;
+    }
+    .result-card {
+        border-radius: 2rem;
+        box-shadow: 0 8px 32px rgba(34,42,95,0.08);
+        margin-top: 2rem;
+    }
+    .gauge-label {
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+    @media (max-width: 767.98px) {
+        .predict-card { margin-top: -60px; }
+        .predict-bg { min-height: 180px; margin-bottom: -60px; }
+    }
+    .heart-loader {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 120px;
+        margin-bottom: 1.5rem;
+    }
+    .heart {
+        width: 60px;
+        height: 60px;
+        position: relative;
+        transform: rotate(-45deg);
+        animation: pound 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+    .heart:before,
+    .heart:after {
+        content: "";
+        position: absolute;
+        width: 60px;
+        height: 60px;
+        background: #e74c3c;
+        border-radius: 50%;
+    }
+    .heart:before {
+        top: -30px;
+        left: 0;
+    }
+    .heart:after {
+        left: 30px;
+        top: 0;
+    }
+    @keyframes pound {
+        0%, 100% { transform: scale(1) rotate(-45deg); }
+        10% { transform: scale(1.15) rotate(-45deg); }
+        20% { transform: scale(0.95) rotate(-45deg); }
+        30% { transform: scale(1.1) rotate(-45deg); }
+        50% { transform: scale(0.92) rotate(-45deg); }
+        70% { transform: scale(1.08) rotate(-45deg); }
+        85% { transform: scale(0.97) rotate(-45deg); }
+    }
+</style>
+<div class="predict-bg w-100 px-0"></div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card predict-card p-4 mb-4">
+                <h2 class="text-center fw-bold mb-4" style="color: #222;">Predict Now</h2>
+                <div id="heart-loader" class="heart-loader" style="display:none;">
+                    <div class="heart"></div>
+                </div>
+                <form id="predict-form" method="post">
+                    <div class="row g-3">
+                        <!-- <div class="col-12">
+                            <label class="form-label w-100">Model
+                                <select name="model_name" class="form-select" required>
+                                    <option value="logistic" selected>Logistic Regression</option>
+                                    <option value="random_forest">Random Forest</option>
+                                    <option value="xgboost">XGBoost</option>
+                                </select>
+                            </label>
+                        </div> -->
+                        <div class="col-12 col-md-6">
+                            <label class="form-label w-100">Age
+                                <input type="number" name="age" min="18" max="100" class="form-control" required placeholder="e.g. 45">
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label w-100">Sex
+                                <select name="sex" class="form-select" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="1">Male</option>
+                                    <option value="0">Female</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label w-100">Chest Pain Type (cp)
+                                <select name="cp" class="form-select" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="1">Typical angina</option>
+                                    <option value="2">Atypical angina</option>
+                                    <option value="3">Non-anginal pain</option>
+                                    <option value="4">Asymptomatic</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label w-100">Resting Blood Pressure (trestbps)
+                                <input type="number" name="trestbps" min="80" max="200" class="form-control" required placeholder="e.g. 120">
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label w-100">Cholesterol (chol)
+                                <input type="number" name="chol" min="100" max="600" class="form-control" required placeholder="e.g. 240">
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label w-100">Fasting Blood Sugar (fbs > 120 mg/dl)
+                                <select name="fbs" class="form-select" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="1">True</option>
+                                    <option value="0">False</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label w-100">Rest ECG (restecg)
+                                <select name="restecg" class="form-select" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="0">Normal</option>
+                                    <option value="1">ST-T Wave Abnormality</option>
+                                    <option value="2">Left Ventricular Hypertrophy</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label w-100">Max Heart Rate (thalach)
+                                <input type="number" name="thalach" min="60" max="220" class="form-control" required placeholder="e.g. 150">
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label w-100">Exercise Induced Angina (exang)
+                                <select name="exang" class="form-select" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label w-100">Oldpeak (ST depression)
+                                <input type="number" name="oldpeak" min="0" max="10" step="0.1" class="form-control" required placeholder="e.g. 1.5">
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label w-100">Slope
+                                <select name="slope" class="form-select" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="1">Upsloping</option>
+                                    <option value="2">Flat</option>
+                                    <option value="3">Downsloping</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label w-100">CA (Number of major vessels)
+                                <select name="ca" class="form-select" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label class="form-label w-100">Thal
+                                <select name="thal" class="form-select" required>
+                                    <option value="" disabled selected>Select</option>
+                                    <option value="3">Normal</option>
+                                    <option value="6">Fixed Defect</option>
+                                    <option value="7">Reversible Defect</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn predict-btn w-100 mt-4">PREDICT NOW</button>
+                </form>
+            </div>
+            {% if prediction is not none %}
+            <div id="result-section" style="display: block;">
+                <div class="card result-card p-4">
+                    <h3 class="fw-bold text-center mb-4">Result</h3>
+                    <div class="d-flex justify-content-center mb-3">
+                    <svg width="260" height="140" viewBox="0 0 260 140">
+                        <defs>
+                            <linearGradient id="riskGradient" x1="0" y1="0" x2="1" y2="0">
+                                <stop offset="0%" stop-color="#27ae60"/>
+                                <stop offset="50%" stop-color="#f7ca18"/>
+                                <stop offset="100%" stop-color="#e74c3c"/>
+                            </linearGradient>
+                            <filter id="needleShadow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#222" flood-opacity="0.4"/>
+                            </filter>
+                        </defs>
+                        <!-- Background arc -->
+                        <path d="M30,120 A100,100 0 0,1 230,120" fill="none" stroke="#eee" stroke-width="24"/>
+                        <!-- Gradient risk arc -->
+                        <path d="M30,120 A100,100 0 0,1 230,120" fill="none" stroke="url(#riskGradient)" stroke-width="16"/>
+                        <!-- Needle -->
+                        {% if x is not none and y is not none %}
+                        <circle cx="130" cy="120" r="12" fill="#fff" stroke="#222" stroke-width="3"/>
+                        <line x1="130" y1="120" x2="{{ x|round(0, 'floor') }}" y2="{{ y|round(0, 'floor') }}" stroke="#c0392b" stroke-width="8" stroke-linecap="round" filter="url(#needleShadow)" />
+                        {% endif %}
+                        <!-- Labels -->
+                        <text x="38" y="135" font-size="18" fill="#27ae60" font-weight="bold">LOW</text>
+                        <text x="200" y="135" font-size="18" fill="#e74c3c" font-weight="bold">HIGH</text>
+                        <text x="120" y="60" font-size="16" fill="#888" text-anchor="middle"></text>
+                    </svg>
+                </div>
+                {% if prediction >= 0.5 %}
+                    <h4 class="fw-bold text-danger text-center mb-2">High risk of heart disease</h4>
+                    <p class="text-center">The model predicts a high risk of heart disease. It is important to consult with your doctor for further evaluation and management.</p>
+                {% else %}
+                    <h4 class="fw-bold text-success text-center mb-2">Low risk of heart disease</h4>
+                    <p class="text-center">The model predicts a low risk of heart disease. Keep maintaining a healthy lifestyle!</p>
+                {% endif %}
+                {% if reasoning %}
+                <div class="alert alert-info mt-3"><strong>Reasoning:</strong> {{ reasoning }}</div>
+                {% endif %}
+                {% if recommendations %}
+                <div class="alert alert-warning mt-3"><strong>Recommendations:</strong>
+                  <ul class="mb-0">
+                  {% for rec in recommendations %}
+                    <li>{{ rec }}</li>
+                  {% endfor %}
+                  </ul>
+                </div>
+                {% endif %}
+                <form method="post" action="/download_report">
+                  <input type="hidden" name="features" value="{{ features }}">
+                  <input type="hidden" name="prediction" value="{{ prediction }}">
+                  <input type="hidden" name="reasoning" value="{{ reasoning }}">
+                  <input type="hidden" name="recommendations" value="{{ recommendations }}">
+                  <button type="submit" class="btn btn-outline-primary mt-2">Download Report</button>
+                </form>
+                {% if session.get('user_id') %}
+                <!-- <form method="post" action="/send_report_sms" class="mt-2">
+                  <input type="hidden" name="prediction" value="{{ prediction }}">
+                  <input type="hidden" name="reasoning" value="{{ reasoning }}">
+                  <input type="hidden" name="recommendations" value="{{ recommendations }}">
+                  <input type="hidden" name="features" value="{{ features }}">
+                  <input type="tel" name="phone" class="form-control mb-2" placeholder="Send report to your phone (optional)">
+                  <button type="submit" class="btn btn-outline-warning" style="background-color: #25b9d3; border-color: #259cd3; color: white;"">Send SMS</button>
+                </form>
+                <form method="post" action="/send_whatsapp" class="mt-2">
+                  <input type="hidden" name="prediction" value="{{ prediction }}">
+                  <input type="hidden" name="reasoning" value="{{ reasoning }}">
+                  <input type="hidden" name="recommendations" value="{{ recommendations }}">
+                  <input type="hidden" name="features" value="{{ features }}">
+                  <input type="tel" name="phone" class="form-control mb-2" placeholder="Send formatted message to WhatsApp (optional)">
+                  <button type="submit" class="btn btn-outline-success" style="background-color: #25D366; border-color: #25D366; color: white;">Send WhatsApp Message</button>
+                </form> -->
+                <form method="post" action="/send_report_email_link" class="mt-2">
+                  <input type="hidden" name="prediction" value="{{ prediction }}">
+                  <input type="hidden" name="reasoning" value="{{ reasoning }}">
+                  <input type="hidden" name="recommendations" value="{{ recommendations }}">
+                  <input type="hidden" name="features" value="{{ features }}">
+                  <input type="email" name="email" class="form-control mb-2" placeholder="Send report to your email (optional)">
+                  <button type="submit" class="btn btn-outline-success" style="background-color: #3125d3; border-color: #255cd3; color: white;">Send Email</button>
+                </form>
+              
+                <!-- <form method="post" action="/send_report_link" class="mt-2">
+                  <input type="hidden" name="prediction" value="{{ prediction }}">
+                  <input type="hidden" name="reasoning" value="{{ reasoning }}">
+                  <input type="hidden" name="recommendations" value="{{ recommendations }}">
+                  <input type="hidden" name="features" value="{{ features }}">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <input type="email" name="email" class="form-control mb-2" placeholder="Email for download link">
+                    </div>
+                    <div class="col-md-4">
+                      <input type="tel" name="phone" class="form-control mb-2" placeholder="Phone for SMS">
+                    </div>
+                    <div class="col-md-4">
+                      <input type="tel" name="whatsapp" class="form-control mb-2" placeholder="Phone for WhatsApp (with download button)">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-outline-info">📥 Send Download Link</button>
+                  <small class="form-text text-muted d-block mt-1">WhatsApp will include an interactive download button for your report!</small>
+                </form> -->
+                {% endif %}
+            </div>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+  const form = document.getElementById('predict-form');
+  const loader = document.getElementById('heart-loader');
+  const resultSection = document.getElementById('result-section');
+  form && form.addEventListener('submit', function(e) {
+    loader.style.display = 'flex';
+    form.style.display = 'none';
+    resultSection && (resultSection.style.display = 'none');
+  });
+  window.addEventListener('DOMContentLoaded', function() {
+    if (resultSection && resultSection.innerHTML.trim() !== '') {
+      resultSection.style.display = 'block';
+      form && (form.style.display = 'none');
+      loader && (loader.style.display = 'none');
+    }
+  });
+</script>
+{% endblock %} 

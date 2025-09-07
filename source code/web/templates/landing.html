@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Predict Your Heart Health Instantly{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row align-items-center mb-5">
+    <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
+      <div class="d-flex align-items-center mb-3">
+        <span class="fs-2 me-2" style="color:#c0392b;">&#10084;</span>
+        <span class="fw-bold fs-3">Heart</span>
+      </div>
+      {% if user_info %}
+        <div class="mb-2 fw-bold">
+          <span class="fw-bold" style="color:#000;">{{ user_info['name'] or user_info['username'] }}</span>, <span class="fw-bold">welcome!</span>
+        </div>
+      {% endif %}
+      <h1 class="display-5 fw-bold mb-3">Predict Your Heart Health Instantly</h1>
+      <p class="lead mb-4">Use our web app to quickly and accurately assess your risk of disease.</p>
+      <a href="/predict" class="btn btn-danger btn-lg px-4">Get Started</a>
+    </div>
+    <div class="col-lg-6 text-center">
+      <img src="{{ url_for('static', filename='images/doctor.png') }}" alt="Doctor" class="img-fluid" style="max-height:300px;">
+    </div>
+  </div>
+  <div class="row text-center mb-5">
+    <div class="col-6 col-md-3 mb-4 mb-md-0">
+      <div class="p-3 rounded shadow-sm bg-white h-100">
+        <div class="mb-2 fs-2" style="color:#c0392b;"><i class="bi bi-speedometer2"></i></div>
+        <h5 class="fw-bold">Fast & Accurate</h5>
+        <p class="mb-0 small">Get results in seconds with high accuracy</p>
+      </div>
+    </div>
+    <div class="col-6 col-md-3 mb-4 mb-md-0">
+      <div class="p-3 rounded shadow-sm bg-white h-100">
+        <div class="mb-2 fs-2" style="color:#c0392b;"><i class="bi bi-shield-lock"></i></div>
+        <h5 class="fw-bold">Secure</h5>
+        <p class="mb-0 small">Your details private and protected</p>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="p-3 rounded shadow-sm bg-white h-100">
+        <div class="mb-2 fs-2" style="color:#c0392b;"><i class="bi bi-check-circle"></i></div>
+        <h5 class="fw-bold">Easy-to-Use</h5>
+        <p class="mb-0 small">Simple and intuitive interface</p>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="p-3 rounded shadow-sm bg-white h-100">
+        <div class="mb-2 fs-2" style="color:#c0392b;"><i class="bi bi-journal-medical"></i></div>
+        <h5 class="fw-bold">Backed by Research</h5>
+        <p class="mb-0 small">Built on the latest scientific research</p>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5 align-items-center">
+    <div class="col-lg-7 mb-4 mb-lg-0">
+      <h2 class="fw-bold mb-3">How It Works</h2>
+      <ol class="ps-3">
+        <li class="mb-2">Enter your health information</li>
+        <li class="mb-2">Run the prediction model</li>
+        <li class="mb-2">Get your results instantly</li>
+      </ol>
+    </div>
+    <div class="col-lg-5">
+      <div class="bg-white rounded shadow-sm p-4">
+        <h5 class="fw-bold mb-3">Health input form</h5>
+        <form>
+          <input type="text" class="form-control mb-2" placeholder="Age" disabled>
+          <select class="form-select mb-2" disabled><option>Sex</option></select>
+          <select class="form-select mb-2" disabled><option>Chest pain type</option></select>
+          <input type="text" class="form-control mb-2" placeholder="Blood pressure" disabled>
+          <input type="text" class="form-control mb-2" placeholder="Cholesterol" disabled>
+          <button class="btn btn-primary w-100" disabled>Predict</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} 

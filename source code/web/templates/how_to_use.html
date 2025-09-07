@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}How to Use - Heart Care+{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row mb-5">
+    <div class="col-lg-8 mx-auto text-center">
+      <h1 class="fw-bold mb-3" style="color:#c0392b;">How to Use Heart Care+</h1>
+      <p class="lead text-muted mb-0">Follow these simple steps to assess your heart health risk using our advanced prediction tool.</p>
+    </div>
+  </div>
+  <div class="row g-4 mb-5 justify-content-center">
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm border-0 text-center p-4">
+        <div class="mb-3 fs-1" style="color:#c0392b;"><i class="bi bi-person-plus"></i></div>
+        <h5 class="fw-bold mb-2">1. Create an Account</h5>
+        <p class="text-muted mb-0">Sign up or log in to access the prediction tool and save your results securely.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm border-0 text-center p-4">
+        <div class="mb-3 fs-1" style="color:#c0392b;"><i class="bi bi-clipboard-data"></i></div>
+        <h5 class="fw-bold mb-2">2. Enter Your Details</h5>
+        <p class="text-muted mb-0">Fill in your health information on the <a href="/predict" class="text-danger">Prediction</a> page.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm border-0 text-center p-4">
+        <div class="mb-3 fs-1" style="color:#c0392b;"><i class="bi bi-activity"></i></div>
+        <h5 class="fw-bold mb-2">3. Get Instant Results</h5>
+        <p class="text-muted mb-0">Click <span class="fw-bold">Predict</span> to see your risk and get personalized advice instantly.</p>
+      </div>
+    </div>
+  </div>
+  <hr class="my-5">
+  <div class="row mb-5 align-items-center">
+    <div class="col-lg-6 mb-4 mb-lg-0">
+      <h3 class="fw-bold mb-3">Sample Prediction Input</h3>
+      <div class="bg-white rounded shadow-sm p-4 border border-2 border-danger-subtle">
+        <div class="row g-2">
+          <div class="col-6"><span class="fw-bold">Age:</span> 54</div>
+          <div class="col-6"><span class="fw-bold">Sex:</span> Male</div>
+          <div class="col-6"><span class="fw-bold">Chest Pain:</span> Type 2 (Atypical angina)</div>
+          <div class="col-6"><span class="fw-bold">BP:</span> 130</div>
+          <div class="col-6"><span class="fw-bold">Cholesterol:</span> 250</div>
+          <div class="col-6"><span class="fw-bold">Fasting Sugar:</span> &gt; 120 mg/dl</div>
+          <div class="col-6"><span class="fw-bold">Rest ECG:</span> Normal</div>
+          <div class="col-6"><span class="fw-bold">Max HR:</span> 160</div>
+          <div class="col-6"><span class="fw-bold">Ex. Angina:</span> No</div>
+          <div class="col-6"><span class="fw-bold">Oldpeak:</span> 1.2</div>
+          <div class="col-6"><span class="fw-bold">Slope:</span> Upsloping</div>
+          <div class="col-6"><span class="fw-bold">CA:</span> 0</div>
+          <div class="col-6"><span class="fw-bold">Thal:</span> Normal</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <h3 class="fw-bold mb-3">Sample Risk Result</h3>
+      <div class="card shadow-sm border-0 bg-light">
+        <div class="card-body text-center">
+          <div class="fs-1 mb-2" style="color:#c0392b;"><i class="bi bi-exclamation-triangle-fill"></i></div>
+          <div class="fw-bold fs-4 mb-2 text-danger">High Risk Detected</div>
+          <div class="text-danger mb-2">Please consult your doctor for further advice.</div>
+          <div class="small text-muted">(This is a sample result. Your actual result may vary.)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr class="my-5">
+  <div class="row">
+    <div class="col-lg-8 mx-auto text-center">
+      <h4 class="fw-bold mb-3">Need Help?</h4>
+      <p class="text-muted">If you have questions or need assistance, please visit our <a href="/about" class="text-danger">About</a> page or contact our support team.</p>
+    </div>
+  </div>
+</div>
+{% endblock %} 

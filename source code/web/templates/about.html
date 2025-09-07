@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% block title %}About - Heart Care+{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row mb-5">
+    <div class="col-lg-8 mx-auto text-center">
+      <h1 class="fw-bold mb-3" style="color:#c0392b;">About Heart Care+</h1>
+      <p class="lead text-muted mb-0">Heart Care+ is an advanced web application that predicts your risk of heart disease using a neural network trained on real medical data. Our mission is to empower you with instant, accessible, and reliable heart health insights—right at your fingertips.</p>
+    </div>
+  </div>
+  <div class="row mb-5 align-items-center">
+    <div class="col-lg-6 mb-4 mb-lg-0">
+      <div class="bg-white rounded shadow-sm p-4 h-100">
+        <h3 class="fw-bold mb-3" style="color:#c0392b;">Contact Us</h3>
+        <form method="post" action="/contact">
+          <div class="mb-3">
+            <label class="form-label">Your Name</label>
+            <input type="text" class="form-control" name="name" placeholder="Enter your name" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email address</label>
+            <input type="email" class="form-control" name="email" placeholder="Enter your email" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Message</label>
+            <textarea class="form-control" name="message" rows="4" placeholder="How can we help you?" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-danger w-100">Send Message</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="bg-white rounded shadow-sm p-4 h-100">
+        <h3 class="fw-bold mb-3" style="color:#c0392b;">Frequently Asked Questions</h3>
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faq1">
+              <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                Is Heart Care+ a substitute for a doctor?
+              </button>
+            </h2>
+            <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                No. Heart Care+ is for educational and informational purposes only. Always consult a healthcare professional for medical advice.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faq2">
+              <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                How accurate are the predictions?
+              </button>
+            </h2>
+            <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Our model is trained on real medical data and provides high accuracy, but no prediction tool is perfect. Use results as guidance, not diagnosis.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faq3">
+              <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                Is my data safe and private?
+              </button>
+            </h2>
+            <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Yes. We use secure methods to store your data and never share your information with third parties.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="faq4">
+              <button class="accordion-button fw-bold collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                Can I use Heart Care+ for someone else?
+              </button>
+            </h2>
+            <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">
+                Yes, but always ensure you have their consent and understand the results are for informational purposes only.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} 

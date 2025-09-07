@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Contact Messages - Admin{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="fw-bold mb-4" style="color:#c0392b;">Contact Messages</h2>
+  {% if messages and messages|length > 0 %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped">
+      <thead class="table-danger">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Message</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for msg in messages %}
+        <tr>
+          <td>{{ msg[0] }}</td>
+          <td>{{ msg[1] }}</td>
+          <td>{{ msg[2] }}</td>
+          <td>{{ msg[3] }}</td>
+          <td>{{ msg[4] }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <div class="alert alert-info">No contact messages yet.</div>
+  {% endif %}
+  <a href="/admin/dashboard" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
+{% endblock %} 

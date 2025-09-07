@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}Records - Heart Care+{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row mb-4">
+    <div class="col-lg-8 mx-auto text-center">
+      <h1 class="fw-bold mb-3" style="color:#c0392b;">Your Prediction Records</h1>
+      <p class="lead text-muted mb-0">Review your past heart care predictions and track your health insights over time.</p>
+    </div>
+  </div>
+  {% if records and records|length > 0 %}
+  <div class="row mb-4 justify-content-center">
+    <div class="col-md-4 mb-3">
+      <div class="card border-0 shadow-sm text-center">
+        <div class="card-body">
+          <div class="fs-2 fw-bold" style="color:#c0392b;">{{ records|length }}</div>
+          <div class="text-muted">Total Predictions</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card border-0 shadow-sm text-center">
+        <div class="card-body">
+          <div class="fs-2 fw-bold text-danger">{{ records|selectattr('risk', 'equalto', 1)|list|length }}</div>
+          <div class="text-muted">High Risk Results</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card border-0 shadow-sm text-center">
+        <div class="card-body">
+          <div class="fs-2 fw-bold text-success">{{ records|selectattr('risk', 'equalto', 0)|list|length }}</div>
+          <div class="text-muted">Low Risk Results</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card shadow-lg border-0">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table align-middle table-hover">
+          <thead class="table-danger">
+            <tr>
+              <th>#</th>
+              <th>Age</th>
+              <th>Sex</th>
+              <th>CP</th>
+              <th>BP</th>
+              <th>Chol</th>
+              <th>FBS</th>
+              <th>ECG</th>
+              <th>Thalach</th>
+              <th>Exang</th>
+              <th>Oldpeak</th>
+              <th>Slope</th>
+              <th>CA</th>
+              <th>Thal</th>
+              <th>Risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in records %}
+            <tr>
+              <td class="text-muted">{{ loop.index }}</td>
+              <td>{{ r['age'] }}</td>
+              <td>{{ 'Male' if r['sex']==1 else 'Female' }}</td>
+              <td>{{ r['cp'] }}</td>
+              <td>{{ r['trestbps'] }}</td>
+              <td>{{ r['chol'] }}</td>
+              <td><span class="badge bg-{{ 'danger' if r['fbs']==1 else 'secondary' }}">{{ 'True' if r['fbs']==1 else 'False' }}</span></td>
+              <td>{{ r['restecg'] }}</td>
+              <td>{{ r['thalach'] }}</td>
+              <td><span class="badge bg-{{ 'danger' if r['exang']==1 else 'success' }}">{{ 'Yes' if r['exang']==1 else 'No' }}</span></td>
+              <td>{{ r['oldpeak'] }}</td>
+              <td>{{ r['slope'] }}</td>
+              <td>{{ r['ca'] }}</td>
+              <td>{{ r['thal'] }}</td>
+              <td>
+                {% if r['risk'] %}
+                  <span class="badge bg-danger"><i class="bi bi-exclamation-triangle-fill me-1"></i> High</span>
+                {% else %}
+                  <span class="badge bg-success"><i class="bi bi-heart-fill me-1"></i> Low</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="row">
+    <div class="col-lg-8 mx-auto text-center">
+      <div class="alert alert-info">No records found. Start your first prediction to see results here!</div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %} 

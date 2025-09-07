@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}Login - Heart Care+{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4">
+        <div class="card shadow-lg" style="border-top: 5px solid #c0392b;">
+          <div class="card-body">
+            <h2 class="card-title text-center mb-4" style="color: #c0392b;">Login</h2>
+            <form method="post" novalidate onsubmit="return validateLoginForm()">
+              <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" required pattern="^[A-Za-z0-9_]{4,20}$" title="Username should be 4-20 characters, letters, numbers, or underscores.">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" required pattern=".{6,}" title="Password must be at least 6 characters.">
+              </div>
+              <button type="submit" class="btn btn-danger w-100">Login</button>
+            </form>
+            <div class="mt-3 text-center">
+              <a href="/signup" class="text-danger">Don't have an account? Sign Up</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function validateLoginForm() {
+    const form = document.forms[0];
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return false;
+    }
+    return true;
+}
+</script>
+{% endblock %} 

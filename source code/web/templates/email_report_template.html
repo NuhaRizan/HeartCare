@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeartCare+ - Your Heart Health Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #c0392b;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .logo {
+            color: #c0392b;
+            font-size: 2.5em;
+            margin-right: 10px;
+        }
+        .app-name {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .prediction-result {
+            background: #f8f9fa;
+            border-left: 5px solid #c0392b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .risk-level {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #c0392b;
+            margin-bottom: 10px;
+        }
+        .section {
+            margin: 25px 0;
+        }
+        .section-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        .recommendations {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #27ae60;
+        }
+        .features-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .features-table th,
+        .features-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .features-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .download-link {
+            background: #c0392b;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        .download-link:hover {
+            background: #a93226;
+            color: white;
+            text-decoration: none;
+        }
+        .disclaimer {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        .unsubscribe {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        .unsubscribe a {
+            color: #7f8c8d;
+            text-decoration: none;
+        }
+        .unsubscribe a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <span class="logo">❤️</span>
+                <span class="app-name">HeartCare+</span>
+            </div>
+            <p style="margin: 10px 0 0 0; color: #7f8c8d;">Your Personalized Heart Health Report</p>
+        </div>
+
+        <div class="section">
+            <h2>Dear {{ user_name or 'Valued User' }},</h2>
+            <p>Thank you for using HeartCare+ for your heart health assessment. Below are your personalized results and recommendations.</p>
+        </div>
+
+        <div class="prediction-result">
+            <div class="risk-level">
+                Heart Disease Risk: {{ prediction_result }}
+            </div>
+            <p><strong>Risk Level:</strong> {{ risk_level }}</p>
+            <p><strong>Confidence Score:</strong> {{ confidence_score }}%</p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">📊 Analysis Summary</div>
+            <p>{{ reasoning or 'Based on the provided health parameters, our AI model has analyzed your risk factors and generated this assessment.' }}</p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">🏥 Health Recommendations</div>
+            <div class="recommendations">
+                {{ recommendations or '''
+                <ul>
+                    <li>Maintain a healthy, balanced diet rich in fruits and vegetables</li>
+                    <li>Engage in regular physical activity (at least 150 minutes per week)</li>
+                    <li>Monitor your blood pressure and cholesterol levels regularly</li>
+                    <li>Avoid smoking and limit alcohol consumption</li>
+                    <li>Consult with your healthcare provider for personalized advice</li>
+                </ul>
+                ''' | safe }}
+            </div>
+        </div>
+
+        {% if features %}
+        <div class="section">
+            <div class="section-title">📋 Your Health Parameters</div>
+            <table class="features-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Your Value</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for feature, value, status in features %}
+                    <tr>
+                        <td>{{ feature }}</td>
+                        <td>{{ value }}</td>
+                        <td>{{ status }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        {% if download_link %}
+        <div class="section" style="text-align: center;">
+            <div class="section-title">📄 Download Full Report</div>
+            <p>Click the button below to download your complete PDF report:</p>
+            <a href="{{ download_link }}" class="download-link">Download PDF Report</a>
+            <p style="font-size: 0.9em; color: #7f8c8d;">This link will expire in 7 days for security purposes.</p>
+        </div>
+        {% endif %}
+
+        <div class="disclaimer">
+            <strong>⚠️ Important Disclaimer:</strong><br>
+            This assessment is for informational purposes only and should not replace professional medical advice. 
+            Always consult with qualified healthcare professionals for proper medical diagnosis and treatment. 
+            If you experience chest pain, shortness of breath, or other concerning symptoms, seek immediate medical attention.
+        </div>
+
+        <div class="footer">
+            <p><strong>HeartCare+</strong> - Empowering Your Heart Health Journey</p>
+            <p>Generated on {{ report_date }} | Report ID: {{ report_id }}</p>
+        </div>
+
+        <div class="unsubscribe">
+            <p>
+                <a href="{{ unsubscribe_link or '#' }}" target="_blank">Unsubscribe</a>
+                •
+                <a href="{{ unsubscribe_preferences or '#' }}" target="_blank">Email Preferences</a>
+            </p>
+            <p>© 2025 HeartCare+. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
